@@ -1,5 +1,5 @@
 const API_KEY = "83c980cec0224e9bbe231632d7b7b720";
-const url = "https://newsapi.org/v2/top-headlines?country=id&category=sports&apiKey=83c980cec0224e9bbe231632d7b7b720";
+const url = "https://newsapi.org/v2/everything?q=sports&apiKey=83c980cec0224e9bbe231632d7b7b720";
 
 // Fetch news data from the API
 async function fetchNews() {
@@ -27,22 +27,32 @@ function displayNews(news) {
     });
 }
 
+async function fetchImageUrl(urlToImage) {
+    try {
+        const response = await fetch(urlToImage);
+        if (response.ok) {
+            return urlToImage;
+        } else {
+            // Jika gambar tidak tersedia, kembalikan URL gambar default
+            return "./img/articles/football1.jpg"; // Ganti dengan path gambar default
+        }
+    } catch (error) {
+        console.error("Error fetching image:", error.message);
+        // Jika terjadi kesalahan, kembalikan URL gambar default
+        return "./img/articles/football1.jpg"; // Ganti dengan path gambar default
+    }
+}
+
 function fillDataInCard(cardClone, article) {
-    const newsImg = cardClone.querySelector("news-photo");
+    const newsImg = cardClone.querySelector("#news-photo");
     const category = cardClone.querySelector(".category");
     const newsTitle = cardClone.querySelector("h3 a");
     const newsDesc = cardClone.querySelector("p");
 
-    // Set nilai src untuk gambar (gunakan urlToImage atau gambar default jika null)
-    if (article.urlToImage) {
-        newsImg.src = article.urlToImage;
-    } else {
-        // Gunakan gambar default jika urlToImage null
-        newsImg.src = "./img/articles/football1.jpg"; // Ganti dengan path gambar default
-    }
-
+    // Panggil fungsi fetchImageUrl untuk mendapatkan URL gambar
+    newsImg.src = article.urlToImage;
     // Set nilai kategori
-    category.textContent = article.category;
+    category.textContent = article.source.name;
 
     // Set nilai judul
     newsTitle.textContent = article.title;
@@ -54,6 +64,7 @@ function fillDataInCard(cardClone, article) {
         window.open(article.url, "_blank");
     });
 }
+
 // Create an article element with data from the API
 function createArticleElement(article) {
     const articleElement = document.createElement("article");
