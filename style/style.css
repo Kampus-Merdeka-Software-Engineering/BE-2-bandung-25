@@ -78,6 +78,8 @@ h6 {
     display: flex;
 }
 
+
+
 #main-nav ul li a {
     padding: 0.75rem;
     font-weight: bold;
@@ -90,15 +92,6 @@ h6 {
 #main-nav ul li a:hover {
     background: var(--light-color);
     color: var(--dark-color);
-}
-
-#main-nav .social {
-    justify-self: center;
-}
-
-#main-nav .social i {
-    color: #777;
-    margin-right: 0.5rem;
 }
 
 .search-bar {
@@ -412,4 +405,34 @@ h6 {
 
 #main-footer .footer-container input[type='submit'] {
     width: 90%;
+}
+
+#feedback-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#feedback-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+#feedback-form input,
+#feedback-form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+}
+
+#feedback-form button {
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+#feedback-form button:hover {
+    opacity: 0.9;
 }

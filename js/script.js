@@ -1,15 +1,38 @@
 const API_KEY = "83c980cec0224e9bbe231632d7b7b720";
 const url = "https://newsapi.org/v2/everything?q=basketball&apiKey=83c980cec0224e9bbe231632d7b7b720";
+const backupUrl = "./backup.json";
 
 // Fetch news data from the API
 async function fetchNews() {
     try {
         const response = await fetch(url);
+
+        if (!response.ok) {
+            // Jika permintaan ke API tidak berhasil, lempar error
+            throw new Error(`Failed to fetch news from API: ${response.statusText}`);
+        }
+
         const data = await response.json();
         return data.articles;
     } catch (error) {
-        console.error("Error fetching news:", error.message);
-        throw error;
+        console.error("Error fetching news from API:", error.message);
+        // Jika terjadi kesalahan, beralih ke data dari file backup.json
+        return fetchBackupData();
+    }
+}
+async function fetchBackupData() {
+    try {
+        const response = await fetch(backupUrl);
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch backup data: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        return data.articles;
+    } catch (error) {
+        console.error("Error fetching backup data:", error.message);
+        throw error; // Jika terjadi kesalahan saat mengambil data backup, lempar error
     }
 }
 
@@ -20,8 +43,11 @@ function displayNews(news) {
     // Clear existing content
     newsContainer.innerHTML = "";
 
+    // Memastikan tidak lebih dari 10 berita yang ditampilkan
+    const limitedNews = news.slice(0, 10);
+
     // Loop through the news articles and create HTML elements
-    news.forEach((article) => {
+    limitedNews.forEach((article) => {
         const articleElement = createArticleElement(article);
         newsContainer.appendChild(articleElement);
     });
