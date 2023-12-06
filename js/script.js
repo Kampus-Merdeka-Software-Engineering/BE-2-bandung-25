@@ -1,5 +1,5 @@
 const API_KEY = "83c980cec0224e9bbe231632d7b7b720";
-const url = "https://newsapi.org/v2/everything?q=sports&apiKey=83c980cec0224e9bbe231632d7b7b720";
+const url = "https://newsapi.org/v2/everything?q=basketball&apiKey=83c980cec0224e9bbe231632d7b7b720";
 
 // Fetch news data from the API
 async function fetchNews() {
@@ -29,17 +29,23 @@ function displayNews(news) {
 
 async function fetchImageUrl(urlToImage) {
     try {
+        if (!urlToImage) {
+            // If image URL is not available, return the default image URL
+            return "./img/articles/football1.jpg"; // Replace with your default image URL
+        }
+
         const response = await fetch(urlToImage);
-        if (response.ok) {
+
+        if (response.status === 200) {
             return urlToImage;
         } else {
-            // Jika gambar tidak tersedia, kembalikan URL gambar default
-            return "./img/articles/football1.jpg"; // Ganti dengan path gambar default
+            // If the image is not available, return the default image URL
+            return "./img/articles/football1.jpg"; // Replace with your default image URL
         }
     } catch (error) {
         console.error("Error fetching image:", error.message);
-        // Jika terjadi kesalahan, kembalikan URL gambar default
-        return "./img/articles/football1.jpg"; // Ganti dengan path gambar default
+        // If an error occurs, return the default image URL
+        return "./img/articles/football1.jpg"; // Replace with your default image URL
     }
 }
 
@@ -50,10 +56,17 @@ function fillDataInCard(cardClone, article) {
     const newsDesc = cardClone.querySelector("p");
 
     // Panggil fungsi fetchImageUrl untuk mendapatkan URL gambar
-    newsImg.src = article.urlToImage;
+    fetchImageUrl(article.urlToImage)
+        .then((imageUrl) => {
+            // Set the image source
+            newsImg.src = imageUrl;
+        })
+        .catch((error) => {
+            console.error("Error setting image:", error.message);
+        });
+
     // Set nilai kategori
     category.textContent = article.source.name;
-
     // Set nilai judul
     newsTitle.textContent = article.title;
     // Set nilai deskripsi
@@ -72,9 +85,10 @@ function createArticleElement(article) {
 
     // Check if the article has an image
     if (article.urlToImage) {
-        const imgElement = document.createElement("news-photo");
+        const imgElement = document.createElement("img");
         imgElement.src = article.urlToImage;
         imgElement.alt = "photo";
+        imgElement.id = "news-photo"; // Added an ID to the image element
         articleElement.appendChild(imgElement);
     }
 

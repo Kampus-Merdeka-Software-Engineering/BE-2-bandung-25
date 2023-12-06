@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Kampus-Merdeka-Software-Engineering/BE-2-bandung-25/issues"
   },
-  "homepage": "https://github.com/Kampus-Merdeka-Software-Engineering/BE-2-bandung-25#readme"
+  "homepage": "https://github.com/Kampus-Merdeka-Software-Engineering/BE-2-bandung-25#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
