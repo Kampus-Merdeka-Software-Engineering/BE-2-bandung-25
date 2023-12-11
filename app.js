@@ -2,6 +2,8 @@ require("dotenv").config()
 const express = require("express");
 const cors = require("cors")
 const { feedbackRoutes } = require("./routes/feedback.routes");
+const { articleRoutes } = require("./routes/article.routes");
+const { newsletterRoutes } = require("./routes/newsletter.routes");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -14,6 +16,8 @@ app.get("/", async (req, res) => {
 });
 
 app.use("/feedback", feedbackRoutes);
+app.use("/article", articleRoutes);
+app.use("/newsletter", newsletterRoutes);
 
 app.all("*", async (req, res) => {
     res.json({
