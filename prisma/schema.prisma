@@ -21,3 +21,12 @@ model newsletter {
   id    Int    @id @default(autoincrement())
   email String
 }
+
+model articles{
+  id Int @id @default(autoincrement())
+  title String
+  description String @db.Text
+  url String
+  urlToImage String
+  Content String @db.Text
+}
